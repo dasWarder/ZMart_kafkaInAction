@@ -1,4 +1,4 @@
-package com.example.zmart.storeproducer.model;
+package com.example.zmart.streamsnode.model;
 
 public enum Department {
 

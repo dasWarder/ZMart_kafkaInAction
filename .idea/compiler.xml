@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" />
         </processorPath>
         <module name="StoreProducer" />
+        <module name="StreamsNode" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -28,6 +29,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="StoreProducer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="StreamsNode" options="-parameters -Amapstruct.defaultComponentModel=spring" />
     </option>
   </component>
 </project>

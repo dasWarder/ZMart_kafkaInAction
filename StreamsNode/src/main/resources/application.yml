@@ -1,0 +1,11 @@
+server:
+  port: 8082
+kafka:
+  bootstrap-server: 127.0.0.1:9092
+  topics:
+    source: store
+    benefits-stock: benefits
+    patterns-stock: patterns
+    coffee-department: coffee
+    purchases-transactions: purchases
+    electronic-department: electronic
