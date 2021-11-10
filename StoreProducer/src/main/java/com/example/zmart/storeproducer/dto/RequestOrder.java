@@ -19,6 +19,9 @@ import java.util.Collection;
 @AllArgsConstructor
 public class RequestOrder {
 
+    @NotNull
+    private String id;
+
     @Valid
     @NotNull
     private Collection<Product> products;

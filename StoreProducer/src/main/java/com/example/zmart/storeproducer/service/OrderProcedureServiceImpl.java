@@ -12,14 +12,6 @@ import java.util.UUID;
 public class OrderProcedureServiceImpl implements OrderProcedureService {
 
   @Override
-  public String generateRandomId() {
-
-    log.info("Generate random UUID");
-
-    return UUID.randomUUID().toString();
-  }
-
-  @Override
   public Double calculateTotalPurchaseCost(Collection<Product> products) {
 
     log.info("Calculate sum of all products");

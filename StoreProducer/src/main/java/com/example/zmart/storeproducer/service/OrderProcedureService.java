@@ -5,7 +5,5 @@ import java.util.Collection;
 
 public interface OrderProcedureService {
 
-    String generateRandomId();
-
     Double calculateTotalPurchaseCost(Collection<Product> products);
 }

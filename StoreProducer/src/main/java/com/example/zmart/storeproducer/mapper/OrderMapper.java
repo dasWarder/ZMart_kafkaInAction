@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Mapper(imports = LocalDateTime.class)
 public interface OrderMapper {
 
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "purchaseDate", ignore = true)
     @Mapping(target = "costOfPurchase", ignore = true)
     Order requestOrderToOrder(RequestOrder requestOrder);

@@ -1,7 +1,6 @@
 package com.example.zmart.storeproducer.dto;
 
 import com.example.zmart.storeproducer.model.Department;
-import com.example.zmart.storeproducer.model.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -13,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Data
 @NoArgsConstructor

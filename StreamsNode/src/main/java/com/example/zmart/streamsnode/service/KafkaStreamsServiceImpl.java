@@ -1,19 +1,30 @@
 package com.example.zmart.streamsnode.service;
 
+import com.example.zmart.streamsnode.dto.BenefitsInfo;
+import com.example.zmart.streamsnode.dto.RewardDateInfo;
 import com.example.zmart.streamsnode.mapper.CustomStringObjectMapper;
 import com.example.zmart.streamsnode.mapper.OrderMapper;
 import com.example.zmart.streamsnode.model.Order;
+import com.example.zmart.streamsnode.util.BenefitsStreamPartitioner;
+import com.example.zmart.streamsnode.util.CustomBenefitsTransformer;
 import com.example.zmart.streamsnode.util.StreamsUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.StoreBuilder;
+import org.apache.kafka.streams.state.Stores;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -53,7 +64,7 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
         creatingCloakingCardNumberStream(sourceStream);
 
     processingToPurchasesStock(cloakingCardNumberStream);
-    processingToBenefitsStock(cloakingCardNumberStream);
+    processingToBenefitsStock(cloakingCardNumberStream, builder);
     processingPatternsStock(cloakingCardNumberStream);
     processingCoffeeAndElectronicBranching(cloakingCardNumberStream);
 
@@ -86,14 +97,34 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
         .to(purchasesTransactionsTopic, Produced.with(Serdes.Long(), Serdes.String()));
   }
 
-  private void processingToBenefitsStock(KStream<String, Order> stream) {
+  private void processingToBenefitsStock(KStream<String, Order> stream, StreamsBuilder builder) {
 
     log.info("Processing orders to the benefits stock");
 
+    StoreBuilder<KeyValueStore<String, String>> benefits =
+        Stores.keyValueStoreBuilder(
+            Stores.persistentKeyValueStore("benefits"), Serdes.String(), Serdes.String());
+
+    builder.addStateStore(benefits);
+
+    //    KStream<String, String> stringObjectKStream =
+    //        stream
+    //            .mapValues(stringObjectMapper::objectToString)
+    //            .through(
+    //                purchasesTransactionsTopic,
+    //                Produced.with(
+    //                    Serdes.String(),
+    //                    Serdes.String(),
+    //                    new BenefitsStreamPartitioner(stringObjectMapper)));
+
     stream
-        .mapValues(orderMapper::orderToBenefitsInfo)
         .mapValues(stringObjectMapper::objectToString)
-        .to(benefitsTopic, Produced.with(Serdes.String(), Serdes.String()));
+        .transformValues(
+            new CustomBenefitsTransformer(benefits.name(), orderMapper, stringObjectMapper),
+            benefits.name())
+        .to(
+            benefitsTopic,
+            (Produced<String, String>) Produced.with(Serdes.String(), Serdes.String()));
   }
 
   private void processingPatternsStock(KStream<String, Order> stream) {
@@ -111,13 +142,33 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
     log.info("Processing orders branching to the caffe and the electronic stocks");
 
     Predicate<String, Order> coffeeBranch = (k, v) -> v.getDepartment().getName().equals("coffee");
-    Predicate<String, Order> electronicBranch = (k, v) -> v.getDepartment().getName().equals("electronic");
+    Predicate<String, Order> electronicBranch =
+        (k, v) -> v.getDepartment().getName().equals("electronic");
 
     KStream<String, Order>[] newBranches = stream.branch(coffeeBranch, electronicBranch);
 
-    newBranches[0].mapValues(stringObjectMapper::objectToString).
-            to(coffeeDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
-    newBranches[1].mapValues(stringObjectMapper::objectToString)
-            .to(electronicDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
+    newBranches[0]
+        .mapValues(stringObjectMapper::objectToString)
+        .to(coffeeDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
+    newBranches[1]
+        .mapValues(stringObjectMapper::objectToString)
+        .to(electronicDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
   }
+
+  /*
+  Integer currentPurchaseBonuses = (int) Math.round(order.getCostOfPurchase());
+
+        benefitsInfo = orderMapper.orderToBenefitsInfo(order);
+        benefitsInfo.setCurrentRewardPoints(currentPurchaseBonuses);
+
+        Integer bonuses = stateStore.get(benefitsInfo.getClientId());
+
+        if( Objects.nonNull(bonuses)) {
+            benefitsInfo.setTotalRewardPoints(benefitsInfo.getCurrentRewardPoints() + bonuses);
+        }
+
+        stateStore.put(benefitsInfo.getClientId(), benefitsInfo.getTotalRewardPoints());
+
+        return KeyValue.pair();
+   */
 }

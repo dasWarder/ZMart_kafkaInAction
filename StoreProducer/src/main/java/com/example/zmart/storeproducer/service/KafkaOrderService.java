@@ -36,10 +36,7 @@ public class KafkaOrderService implements OrderService {
 
     private Order updateOrderData(Order order) {
 
-        String uuid = procedureService.generateRandomId();
         Double totalCost = procedureService.calculateTotalPurchaseCost(order.getProducts());
-
-        order.setId(uuid);
         order.setCostOfPurchase(totalCost);
 
         return order;
