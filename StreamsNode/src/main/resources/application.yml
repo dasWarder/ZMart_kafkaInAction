@@ -9,3 +9,4 @@ kafka:
     coffee-department: coffee
     purchases-transactions: purchases
     electronic-department: electronic
+    subtopic: subtopic

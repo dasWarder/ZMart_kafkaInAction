@@ -1,7 +1,5 @@
 package com.example.zmart.streamsnode.service;
 
-import com.example.zmart.streamsnode.dto.BenefitsInfo;
-import com.example.zmart.streamsnode.dto.RewardDateInfo;
 import com.example.zmart.streamsnode.mapper.CustomStringObjectMapper;
 import com.example.zmart.streamsnode.mapper.OrderMapper;
 import com.example.zmart.streamsnode.model.Order;
@@ -13,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
-import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;
@@ -21,15 +18,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class KafkaStreamsServiceImpl implements KafkaStreamsService {
+
+  @Value("${kafka.topics.subtopic}")
+  private String subtopic;
 
   @Value("${kafka.topics.source}")
   private String sourceTopic;
@@ -63,8 +60,8 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
     KStream<String, Order> cloakingCardNumberStream =
         creatingCloakingCardNumberStream(sourceStream);
 
-    processingToPurchasesStock(cloakingCardNumberStream);
     processingToBenefitsStock(cloakingCardNumberStream, builder);
+    processingToPurchasesStock(cloakingCardNumberStream);
     processingPatternsStock(cloakingCardNumberStream);
     processingCoffeeAndElectronicBranching(cloakingCardNumberStream);
 
@@ -107,18 +104,16 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
 
     builder.addStateStore(benefits);
 
-    //    KStream<String, String> stringObjectKStream =
-    //        stream
-    //            .mapValues(stringObjectMapper::objectToString)
-    //            .through(
-    //                purchasesTransactionsTopic,
-    //                Produced.with(
-    //                    Serdes.String(),
-    //                    Serdes.String(),
-    //                    new BenefitsStreamPartitioner(stringObjectMapper)));
+    KStream<String, String> subtopicStream = stream
+            .mapValues(stringObjectMapper::objectToString)
+            .through(
+                    subtopic,
+                    Produced.with(
+                            Serdes.String(),
+                            Serdes.String(),
+                            new BenefitsStreamPartitioner(stringObjectMapper)));
 
-    stream
-        .mapValues(stringObjectMapper::objectToString)
+    subtopicStream
         .transformValues(
             new CustomBenefitsTransformer(benefits.name(), orderMapper, stringObjectMapper),
             benefits.name())
