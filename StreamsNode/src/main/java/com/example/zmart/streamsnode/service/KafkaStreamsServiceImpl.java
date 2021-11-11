@@ -25,6 +25,9 @@ import java.time.ZoneOffset;
 @RequiredArgsConstructor
 public class KafkaStreamsServiceImpl implements KafkaStreamsService {
 
+  private final Integer COFFEE_PURCHASE = 0;
+  private final Integer ELECTRONIC_PURCHASE = 1;
+
   @Value("${kafka.topics.subtopic}")
   private String subtopic;
 
@@ -104,14 +107,15 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
 
     builder.addStateStore(benefits);
 
-    KStream<String, String> subtopicStream = stream
+    KStream<String, String> subtopicStream =
+        stream
             .mapValues(stringObjectMapper::objectToString)
             .through(
-                    subtopic,
-                    Produced.with(
-                            Serdes.String(),
-                            Serdes.String(),
-                            new BenefitsStreamPartitioner(stringObjectMapper)));
+                subtopic,
+                Produced.with(
+                    Serdes.String(),
+                    Serdes.String(),
+                    new BenefitsStreamPartitioner(stringObjectMapper)));
 
     subtopicStream
         .transformValues(
@@ -142,10 +146,11 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
 
     KStream<String, Order>[] newBranches = stream.branch(coffeeBranch, electronicBranch);
 
-    newBranches[0]
+    newBranches[COFFEE_PURCHASE]
         .mapValues(stringObjectMapper::objectToString)
         .to(coffeeDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
-    newBranches[1]
+
+    newBranches[ELECTRONIC_PURCHASE]
         .mapValues(stringObjectMapper::objectToString)
         .to(electronicDepartmentTopic, Produced.with(Serdes.String(), Serdes.String()));
   }

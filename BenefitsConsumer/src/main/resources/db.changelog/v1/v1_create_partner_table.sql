@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS partner;
+DROP SEQUENCE IF EXISTS partner_seq;
+
+CREATE SEQUENCE partner_seq START WITH 1;
+
+CREATE TABLE partner (
+    id BIGINT PRIMARY KEY NOT NULL DEFAULT nextval('partner_seq'),
+    name VARCHAR(256) UNIQUE NOT NULL,
+    description VARCHAR NOT NULL
+);
