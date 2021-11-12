@@ -1,0 +1,19 @@
+package com.example.zmart.clientproducer.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PartnerBonusesResponse {
+
+    private String clientEmail;
+
+    private List<PartnersBonuses> bonuses;
+}
