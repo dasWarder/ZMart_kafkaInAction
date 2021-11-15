@@ -10,4 +10,6 @@
 
     <include file="classpath:db.changelog/v1/v1_create_partner_table.sql"/>
     <include file="classpath:db.changelog/v1/v1_create_bonus_table.sql"/>
+    <include file="classpath:db.changelog/v1/v1_populate_partner_table.sql"/>
+    <include file="classpath:db.changelog/v1/v1_populate_bonus_table.sql"/>
 </databaseChangeLog>

@@ -10,3 +10,5 @@ kafka:
     purchases-transactions: purchases
     electronic-department: electronic
     subtopic: subtopic
+    client-request: client_data
+    client-response: users

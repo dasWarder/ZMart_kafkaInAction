@@ -130,8 +130,8 @@
                 <version>${liquibase.version}</version>
                 <configuration>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>/src/main/resources/liquibase.properties</propertyFile>
-                    <changeLogFile>/src/main/resources/db.changelog/db.changelog-master.yml</changeLogFile>
+                    <propertyFile>/src/main/resources/liquibase.yml</propertyFile>
+                    <changeLogFile>/src/main/resources/db.changelog/db.changelog-master.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>

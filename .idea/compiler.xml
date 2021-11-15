@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BenefitsConsumer" />
         <module name="ZMart_kafkaInAction" />
       </profile>
       <profile name="Annotation profile for StoreProducer" enabled="true">
@@ -19,6 +18,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.2.Final/mapstruct-processor-1.4.2.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" />
         </processorPath>
+        <module name="BenefitsConsumer" />
+        <module name="ClientProducer" />
         <module name="StoreProducer" />
         <module name="StreamsNode" />
       </profile>
@@ -29,7 +30,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="BenefitsConsumer" options="-parameters" />
+      <module name="BenefitsConsumer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="ClientProducer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="StoreProducer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="StreamsNode" options="-parameters -Amapstruct.defaultComponentModel=spring" />
     </option>

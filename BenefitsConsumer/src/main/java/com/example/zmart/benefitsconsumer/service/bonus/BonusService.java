@@ -1,4 +1,4 @@
-package com.example.zmart.benefitsconsumer.service;
+package com.example.zmart.benefitsconsumer.service.bonus;
 
 import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;

@@ -1,10 +1,10 @@
-package com.example.zmart.benefitsconsumer.service;
+package com.example.zmart.benefitsconsumer.service.partner;
 
 import com.example.zmart.benefitsconsumer.dao.PartnerRepository;
-import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
 import com.example.zmart.benefitsconsumer.model.Bonus;
 import com.example.zmart.benefitsconsumer.model.Partner;
+import com.example.zmart.benefitsconsumer.service.bonus.BonusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -76,6 +77,14 @@ public class PartnerServiceImpl implements PartnerService {
     log.info("Get a collection of partners");
 
     return partnerRepository.findAll(pageable);
+  }
+
+  @Override
+  public List<Partner> getPartners() {
+
+    log.info("Get a collection of partners");
+
+    return (List<Partner>) partnerRepository.findAll();
   }
 
   @Override

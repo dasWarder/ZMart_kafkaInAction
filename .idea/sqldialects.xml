@@ -3,5 +3,9 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/BenefitsConsumer/src/main/resources/db.changelog/v1/v1_create_bonus_table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/BenefitsConsumer/src/main/resources/db.changelog/v1/v1_create_partner_table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/BenefitsConsumer/src/main/resources/db.changelog/v1/v1_populate_bonus_table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/BenefitsConsumer/src/main/resources/db.changelog/v1/v1_populate_partner_table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/ClientProducer/src/main/resources/db.changelog/v1/v1_create_client_table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/ClientProducer/src/main/resources/db.changelog/v1/v1_populate_client_table.sql" dialect="PostgreSQL" />
   </component>
 </project>
