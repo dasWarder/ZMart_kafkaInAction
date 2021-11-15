@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ZMart_kafkaInAction" />
+        <module name="PurchasesConsumer" />
       </profile>
       <profile name="Annotation profile for StoreProducer" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -32,6 +33,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="BenefitsConsumer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="ClientProducer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="PurchasesConsumer" options="-parameters" />
       <module name="StoreProducer" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="StreamsNode" options="-parameters -Amapstruct.defaultComponentModel=spring" />
     </option>
