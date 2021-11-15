@@ -7,6 +7,7 @@ import com.example.zmart.benefitsconsumer.dto.info.PartnersBonuses;
 import com.example.zmart.benefitsconsumer.model.Bonus;
 import com.example.zmart.benefitsconsumer.model.Partner;
 import com.example.zmart.benefitsconsumer.service.bonus.BonusService;
+import com.example.zmart.benefitsconsumer.service.email.EmailNotificationService;
 import com.example.zmart.benefitsconsumer.service.partner.PartnerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,8 @@ public class KafkaConsumerServiceImpl implements KafkaConsumeService {
   private final BonusService bonusService;
 
   private final PartnerService partnerService;
+
+  private final EmailNotificationService emailNotificationService;
 
   @Override
   @KafkaListener(topics = "benefits", groupId = "benefits_group_1")
@@ -60,8 +63,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumeService {
     PartnerBonusesResponse partnerBonusesResponse =
         objectMapper.readValue(serializedResponse, PartnerBonusesResponse.class);
 
-    String email = partnerBonusesResponse.getClientEmail();
-    log.info("Received client email = {}", email);
+    emailNotificationService.sendBenefits(partnerBonusesResponse);
   }
 
   private List<Bonus> receiveListOfBonuses(List<Partner> partners, Long totalRewardPoints) {
