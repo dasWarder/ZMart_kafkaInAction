@@ -1,5 +1,6 @@
 package com.example.zmart.patternsconsumer.service;
 
+import com.example.zmart.patternsconsumer.dao.PatternRepository;
 import com.example.zmart.patternsconsumer.dto.PatternsInfoRequest;
 import com.example.zmart.patternsconsumer.model.PatternsInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,8 @@ public class KafkaServiceImpl implements KafkaService {
 
   private final ObjectMapper objectMapper;
 
+  private final PatternRepository patternRepository;
+
   @Override
   @KafkaListener(topics = "patterns", groupId = "patterns_group_id")
   public void consume(String serializedObject) throws JsonProcessingException {
@@ -25,7 +28,8 @@ public class KafkaServiceImpl implements KafkaService {
         objectMapper.readValue(serializedObject, PatternsInfoRequest.class);
 
     PatternsInfo patternsInfo = patternsInfoRequestToPatternsInfo(patternsInfoRequest);
-    log.info("Received pattern: {}", patternsInfo.toString());
+    PatternsInfo storedInfo = patternRepository.save(patternsInfo);
+    log.info("Pattern info was stored with ID ={}", storedInfo.getId());
   }
 
   private PatternsInfo patternsInfoRequestToPatternsInfo(PatternsInfoRequest dto) {
