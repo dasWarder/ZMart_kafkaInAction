@@ -1,7 +1,6 @@
 package com.example.zmart.purchasesconsumer.service;
 
 
-import com.example.zmart.purchasesconsumer.dao.OrderRepository;
 import com.example.zmart.purchasesconsumer.dto.OrderRequest;
 import com.example.zmart.purchasesconsumer.model.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +26,14 @@ public class KafkaServiceImpl implements KafkaService {
         log.info("Consume a serialized object as a string");
 
         OrderRequest orderRequest = objectMapper.readValue(serializedProduct, OrderRequest.class);
+        Order order = orderRequestToOrder(orderRequest);
+
+        Order storedOrder = orderService.saveOrder(order);
+        log.info("ElasticSearch stored: {}", storedOrder.getId());
+    }
+
+    private Order orderRequestToOrder(OrderRequest orderRequest) {
+
         Order order = Order.builder()
                 .clientId(orderRequest.getId())
                 .cardNumber(orderRequest.getCardNumber())
@@ -37,7 +44,6 @@ public class KafkaServiceImpl implements KafkaService {
                 .zip(orderRequest.getZip())
                 .build();
 
-        Order storedOrder = orderService.saveOrder(order);
-        log.info("ElasticSearch stored: {}", storedOrder);
+        return order;
     }
 }
