@@ -5,10 +5,7 @@ import com.example.zmart.streamsnode.mapper.OrderMapper;
 import com.example.zmart.streamsnode.model.CorrelatedOrder;
 import com.example.zmart.streamsnode.model.Department;
 import com.example.zmart.streamsnode.model.Order;
-import com.example.zmart.streamsnode.util.BenefitsStreamPartitioner;
-import com.example.zmart.streamsnode.util.CustomBenefitsTransformer;
-import com.example.zmart.streamsnode.util.OrderJoiner;
-import com.example.zmart.streamsnode.util.StreamsUtil;
+import com.example.zmart.streamsnode.util.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +61,10 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
   public KStream<String, String> processingStream(StreamsBuilder builder) {
 
     KStream<String, String> sourceStream =
-        builder.stream(sourceTopic, Consumed.with(Serdes.String(), Serdes.String()));
+        builder.stream(
+            sourceTopic,
+            Consumed.with(Serdes.String(), Serdes.String())
+                .withTimestampExtractor(new TransactionTimestampExtractor()));
 
     KStream<String, Order> cloakingCardNumberStream =
         creatingCloakingCardNumberStream(sourceStream);
@@ -153,7 +153,9 @@ public class KafkaStreamsServiceImpl implements KafkaStreamsService {
 
     coffeeStream
         .join(electronicStream, orderJoiner, joinWindows)
-        .to("correlatedOrder", (Produced<String, String>) Produced.with(Serdes.String(), Serdes.String()));
+        .to(
+            "correlatedOrder",
+            (Produced<String, String>) Produced.with(Serdes.String(), Serdes.String()));
 
     coffeeStream.to(
         coffeeDepartmentTopic,
