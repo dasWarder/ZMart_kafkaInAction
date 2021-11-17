@@ -4,7 +4,7 @@ import com.example.zmart.benefitsconsumer.dto.partner.PartnerRequest;
 import com.example.zmart.benefitsconsumer.dto.partner.PartnerResponse;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
 import com.example.zmart.benefitsconsumer.mappingService.partner.PartnerMapper;
-import com.example.zmart.benefitsconsumer.model.Partner;
+import com.example.zmart.benefitsconsumer.model.partner.Partner;
 import com.example.zmart.benefitsconsumer.service.partner.PartnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

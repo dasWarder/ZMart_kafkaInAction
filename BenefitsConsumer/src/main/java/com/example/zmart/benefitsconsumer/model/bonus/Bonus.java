@@ -1,5 +1,6 @@
-package com.example.zmart.benefitsconsumer.model;
+package com.example.zmart.benefitsconsumer.model.bonus;
 
+import com.example.zmart.benefitsconsumer.model.partner.Partner;
 import lombok.*;
 
 import javax.persistence.*;

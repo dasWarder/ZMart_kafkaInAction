@@ -2,8 +2,8 @@ package com.example.zmart.benefitsconsumer.service.partner;
 
 import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
-import com.example.zmart.benefitsconsumer.model.Bonus;
-import com.example.zmart.benefitsconsumer.model.Partner;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
+import com.example.zmart.benefitsconsumer.model.partner.Partner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

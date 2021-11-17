@@ -2,7 +2,7 @@ package com.example.zmart.benefitsconsumer.service.bonus;
 
 import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
-import com.example.zmart.benefitsconsumer.model.Bonus;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
 
 import java.util.List;
 

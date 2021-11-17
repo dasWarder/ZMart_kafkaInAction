@@ -1,4 +1,4 @@
-package com.example.zmart.streamsnode.model;
+package com.example.zmart.benefitsconsumer.model.order;
 
 
 public enum ProductType {

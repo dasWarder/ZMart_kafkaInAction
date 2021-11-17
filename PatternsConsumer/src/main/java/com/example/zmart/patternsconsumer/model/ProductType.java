@@ -1,6 +1,7 @@
 package com.example.zmart.patternsconsumer.model;
 
 public enum ProductType {
+
   BABY("baby"),
   ARTS("arts"),
   BEAUTY("beauty"),
@@ -9,7 +10,9 @@ public enum ProductType {
   ELECTRONICS("electronics"),
   FASHION("fashion"),
   HOME("home"),
-  VIDEO_GAMES("video games");
+  VIDEO_GAMES("video games"),
+  FOOD("food"),
+  BEVERAGE("beverage");
 
   private String name;
 

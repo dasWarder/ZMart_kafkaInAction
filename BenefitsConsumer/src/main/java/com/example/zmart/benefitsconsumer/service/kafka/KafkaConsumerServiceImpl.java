@@ -4,8 +4,10 @@ import com.example.zmart.benefitsconsumer.dto.benefits.BenefitsInfo;
 import com.example.zmart.benefitsconsumer.dto.info.PartnerBonusesRequest;
 import com.example.zmart.benefitsconsumer.dto.info.PartnerBonusesResponse;
 import com.example.zmart.benefitsconsumer.dto.info.PartnersBonuses;
-import com.example.zmart.benefitsconsumer.model.Bonus;
-import com.example.zmart.benefitsconsumer.model.Partner;
+import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
+import com.example.zmart.benefitsconsumer.model.order.CorrelatedOrder;
+import com.example.zmart.benefitsconsumer.model.partner.Partner;
 import com.example.zmart.benefitsconsumer.service.bonus.BonusService;
 import com.example.zmart.benefitsconsumer.service.email.EmailNotificationService;
 import com.example.zmart.benefitsconsumer.service.partner.PartnerService;
@@ -52,18 +54,39 @@ public class KafkaConsumerServiceImpl implements KafkaConsumeService {
     PartnerBonusesRequest partnerBonusesRequest =
         createPartnerBonusesRequestObject(clientId, partnerBonuses);
 
-    String serializedResponse = objectMapper.writeValueAsString(partnerBonusesRequest);
-    kafkaTemplate.send("clients_data", serializedResponse);
+    String serializedRequest = objectMapper.writeValueAsString(partnerBonusesRequest);
+    kafkaTemplate.send("clients_data", serializedRequest);
   }
 
   @KafkaListener(topics = "users", groupId = "benefits_group_1")
   public void consumeClient(String serializedResponse) throws JsonProcessingException {
 
-    log.info("Received an object = {}", serializedResponse);
+    log.info("Received an object from users topic");
     PartnerBonusesResponse partnerBonusesResponse =
         objectMapper.readValue(serializedResponse, PartnerBonusesResponse.class);
 
     emailNotificationService.sendBenefits(partnerBonusesResponse);
+  }
+
+  @KafkaListener(topics = "correlatedOrder", groupId = "benefits_group_1")
+  public void consumeFreeCoffee(String serializedObject)
+      throws JsonProcessingException, PartnerNotFoundException {
+
+    log.info("Receive an object from joinedOrder topic");
+
+    final Partner partnerById = partnerService.getPartnerById(5L);
+    CorrelatedOrder correlatedOrder =
+        objectMapper.readValue(serializedObject, CorrelatedOrder.class);
+    PartnersBonuses partnersBonuses =
+        new PartnersBonuses(partnerById.getName(), "Free coffee at ZMart coffee shop");
+
+    PartnerBonusesRequest partnerBonusesRequest =
+        createPartnerBonusesRequestObject(
+            correlatedOrder.getId(), Collections.singletonList(partnersBonuses));
+
+    String request = objectMapper.writeValueAsString(partnerBonusesRequest);
+
+    kafkaTemplate.send("clients_data", request);
   }
 
   private List<Bonus> receiveListOfBonuses(List<Partner> partners, Long totalRewardPoints) {

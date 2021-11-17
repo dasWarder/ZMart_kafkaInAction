@@ -1,5 +1,6 @@
-package com.example.zmart.benefitsconsumer.model;
+package com.example.zmart.benefitsconsumer.model.partner;
 
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

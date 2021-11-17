@@ -2,7 +2,7 @@ package com.example.zmart.benefitsconsumer.service.bonus;
 
 import com.example.zmart.benefitsconsumer.dao.BonusRepository;
 import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
-import com.example.zmart.benefitsconsumer.model.Bonus;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

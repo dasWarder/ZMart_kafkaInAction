@@ -1,6 +1,6 @@
 package com.example.zmart.benefitsconsumer.dao;
 
-import com.example.zmart.benefitsconsumer.model.Bonus;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

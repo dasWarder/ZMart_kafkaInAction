@@ -5,7 +5,7 @@ import com.example.zmart.benefitsconsumer.dto.bonus.BonusResponse;
 import com.example.zmart.benefitsconsumer.exception.BonusNotFoundException;
 import com.example.zmart.benefitsconsumer.exception.PartnerNotFoundException;
 import com.example.zmart.benefitsconsumer.mappingService.bonus.BonusMapper;
-import com.example.zmart.benefitsconsumer.model.Bonus;
+import com.example.zmart.benefitsconsumer.model.bonus.Bonus;
 import com.example.zmart.benefitsconsumer.service.bonus.BonusService;
 import com.example.zmart.benefitsconsumer.service.partner.PartnerService;
 import lombok.RequiredArgsConstructor;

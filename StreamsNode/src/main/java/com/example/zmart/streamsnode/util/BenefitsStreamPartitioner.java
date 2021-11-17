@@ -16,7 +16,7 @@ public class BenefitsStreamPartitioner implements StreamPartitioner<String, Stri
     public Integer partition(String s, String s2, String order, int i) {
 
         Order orderObj = (Order) stringObjectMapper.stringToObject(order, Order.class);
-        log.info("ORDER OBJECT HASH CODE: {}", Math.abs(orderObj.getId().hashCode() % i));
+        log.info("Order object partition {} based on hash code", Math.abs(orderObj.getId().hashCode() % i));
 
         return Math.abs(orderObj.getId().hashCode() % i);
     }

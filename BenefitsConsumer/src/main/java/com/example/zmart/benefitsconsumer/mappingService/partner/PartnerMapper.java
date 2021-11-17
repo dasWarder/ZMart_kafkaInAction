@@ -3,7 +3,7 @@ package com.example.zmart.benefitsconsumer.mappingService.partner;
 import com.example.zmart.benefitsconsumer.dto.partner.PartnerRequest;
 import com.example.zmart.benefitsconsumer.dto.partner.PartnerResponse;
 import com.example.zmart.benefitsconsumer.mappingService.bonus.BonusMapper;
-import com.example.zmart.benefitsconsumer.model.Partner;
+import com.example.zmart.benefitsconsumer.model.partner.Partner;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

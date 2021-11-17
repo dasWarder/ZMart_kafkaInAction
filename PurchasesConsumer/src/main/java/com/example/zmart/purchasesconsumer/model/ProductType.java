@@ -11,7 +11,9 @@ public enum ProductType {
     ELECTRONICS("electronics"),
     FASHION("fashion"),
     HOME("home"),
-    VIDEO_GAMES("video games");
+    VIDEO_GAMES("video games"),
+    FOOD("food"),
+    BEVERAGE("beverage");
 
     private String name;
 

@@ -1,7 +1,6 @@
 package com.example.zmart.benefitsconsumer.dto.partner;
 
 import com.example.zmart.benefitsconsumer.dto.bonus.BonusResponse;
-import com.example.zmart.benefitsconsumer.model.Bonus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
